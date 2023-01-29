@@ -3,7 +3,12 @@ from django.shortcuts import redirect, render
 
 from .models import *
 
-menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти']
+menu = [
+    {'title': 'О сайте', 'url_name': 'women:about'},
+    {'title': 'Добавить статью', 'url_name': 'women:add_page'},
+    {'title': 'Обратная связь', 'url_name': 'women:contact'},
+    {'title': 'Войти', 'url_name': 'women:login'}
+]
 
 
 def index(request):
@@ -15,11 +20,32 @@ def index(request):
     return render(request, template, context)
 
 
+def show_post(request, post_id):
+    post = Women.objects.get(id=post_id)
+    template = 'women/post.html'
+    context = {'title': 'Главная страница',
+               'menu': menu,
+               'post': post}
+    return render(request, template, context)
+
+
 def about(request):
     template = 'women/about.html'
     context = {'title': 'О сайте',
                'menu': menu}
     return render(request, template, context)
+
+
+def addpage(request):
+    return HttpResponse("Добавить статью")
+
+
+def login(request):
+    return HttpResponse("Авторизация")
+
+
+def contact(request):
+    return HttpResponse("Написать обращение")
 
 
 def categories(request, slug):
